@@ -9,4 +9,6 @@ if [[ $UPDATE  =~ true || $UPDATE =~ 1 || $UPDATE =~ yes ]]; then
     apt-get -y dist-upgrade --force-yes
     reboot
     sleep 60
+else
+    echo "==> Skipping dist-upgrade"
 fi
