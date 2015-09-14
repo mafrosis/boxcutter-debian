@@ -15,8 +15,15 @@ echo "==> Removing all linux kernels except the currrent one"
 dpkg --list | awk '{ print $2 }' | grep 'linux-image-3.*-generic' | grep -v $(uname -r) | xargs apt-get -y purge
 echo "==> Removing linux source"
 dpkg --list | awk '{ print $2 }' | grep linux-source | xargs apt-get -y purge
-echo "==> Removing development packages"
-dpkg --list | awk '{ print $2 }' | grep -- '-dev$' | xargs apt-get -y purge
+#echo "==> Removing development packages"
+#dpkg --list | awk '{ print $2 }' | grep -- '-dev$' | xargs apt-get -y purge
+
+# remove some desktop components
+if [[ "$DESKTOP_FLAG" == "1" ]]; then
+  apt-get -y purge gnome-getting-started-docs
+  apt-get -y purge $(dpkg --get-selections | grep -v deinstall | grep libreoffice | cut -f 1)
+fi
+
 echo "==> Removing documentation"
 dpkg --list | awk '{ print $2 }' | grep -- '-doc$' | xargs apt-get -y purge
 apt-get -y purge build-essential
@@ -36,7 +43,7 @@ apt-get -y purge python-dbus libnl1 python-smartpm python-twisted-core libiw30 p
 
 # packages installed for VMWare tools
 echo "==> Remove dependencies of VMWare Tools"
-apt-get -y purge git unzip
+apt-get -y purge unzip
 
 # Clean up the apt cache
 echo "==> Cleaning up the apt cache"
