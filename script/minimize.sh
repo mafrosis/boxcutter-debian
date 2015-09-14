@@ -34,6 +34,10 @@ apt-get -y purge ruby ri doc libffi5
 echo "==> Removing default system Python"
 apt-get -y purge python-dbus libnl1 python-smartpm python-twisted-core libiw30 python-twisted-bin libdbus-glib-1-2 python-pexpect python-pycurl python-serial python-gobject python-pam python-openssl
 
+# packages installed for VMWare tools
+echo "==> Remove dependencies of VMWare Tools"
+apt-get -y purge git unzip
+
 # Clean up the apt cache
 echo "==> Cleaning up the apt cache"
 apt-get -y autoremove --purge

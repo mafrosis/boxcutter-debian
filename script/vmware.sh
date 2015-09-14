@@ -1,33 +1,15 @@
 #!/bin/bash -eux
 
 SSH_USERNAME=${SSH_USERNAME:-vagrant}
+VMWARE_TOOLS_VERSION=${VMWARE_TOOLS_VERSION:-8.1.1}
 
 if [[ $PACKER_BUILDER_TYPE =~ vmware ]]; then
     echo "==> Installing VMware Tools"
-    apt-get install -y linux-headers-$(uname -r) build-essential perl
+    apt-get install -y "linux-headers-$(uname -r)" build-essential perl git unzip
 
-    cd /tmp
-    mkdir -p /mnt/cdrom
-    mount -o loop /home/vagrant/linux.iso /mnt/cdrom
-
-    VMWARE_TOOLS_PATH=$(ls /mnt/cdrom/VMwareTools-*.tar.gz)
-    VMWARE_TOOLS_VERSION=$(echo "${VMWARE_TOOLS_PATH}" | cut -f2 -d'-')
-    VMWARE_TOOLS_BUILD=$(echo "${VMWARE_TOOLS_PATH}" | cut -f3 -d'-')
-    VMWARE_TOOLS_BUILD=$(basename ${VMWARE_TOOLS_BUILD} .tar.gz)
-    echo "==> VMware Tools Path: ${VMWARE_TOOLS_PATH}"
-    echo "==> VMware Tools Version: ${VMWARE_TOOLS_VERSION}"
-    echo "==> VMWare Tools Build: ${VMWARE_TOOLS_BUILD}"
-
-    tar zxf /mnt/cdrom/VMwareTools-*.tar.gz -C /tmp/
-    VMWARE_TOOLS_MAJOR_VERSION=$(echo ${VMWARE_TOOLS_VERSION} | cut -d '.' -f 1)
-    if [ "${VMWARE_TOOLS_MAJOR_VERSION}" -lt "10" ]; then
-        /tmp/vmware-tools-distrib/vmware-install.pl -d
-    else
-        /tmp/vmware-tools-distrib/vmware-install.pl --force-install
-    fi
-
-    rm /home/${SSH_USERNAME}/linux.iso
-    umount /mnt/cdrom
-    rmdir /mnt/cdrom
-    rm -rf /tmp/VMwareTools-*
+    cd /tmp || exit
+    git clone https://github.com/rasa/vmware-tools-patches.git
+    cd vmware-tools-patches || exit
+    ./download-tools.sh "$VMWARE_TOOLS_VERSION"
+    ./untar-and-patch-and-compile.sh
 fi
