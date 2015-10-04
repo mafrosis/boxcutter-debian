@@ -19,3 +19,11 @@ function saltstack_gitfs {
 	pip install -U pip pygit2==0.21.4
 }
 saltstack_gitfs
+
+
+# display saltstack version message
+function motd_saltstack {
+	echo "==> Customizing message of the day for Saltstack"
+	sed -i "/Debian GNU/a\ \ Saltstack $(sudo salt-call --version | cut -d\  -f 2,3)" /etc/motd
+}
+motd_saltstack
