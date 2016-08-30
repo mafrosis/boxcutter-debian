@@ -8,6 +8,21 @@ set -eux
 # For example:
 # yum install -y curl wget git tmux firefox xvfb
 
+
+# bootstrap salt
+bootstrap_salt() {
+    echo '==> Installing Salt'
+    if [[ ${SALT_VERSION:-} == 'latest' ]]; then
+        echo 'Installing latest Salt version'
+        curl -L http://bootstrap.saltstack.org | bash | grep -v copying | grep -v byte-compiling
+    else
+        echo "Installing Salt version $SALT_VERSION"
+        curl -L http://bootstrap.saltstack.org | bash -s -- -P git "$SALT_VERSION" | grep -v copying | grep -v byte-compiling
+    fi
+}
+bootstrap_salt
+
+
 # install gitfs
 function saltstack_gitfs {
 	# Jessie currently has libgit2 v0.21.1

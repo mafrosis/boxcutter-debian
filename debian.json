@@ -121,7 +121,7 @@
   "post-processors": [
     {
       "keep_input_artifact": false,
-      "output": "box/{{.Provider}}/jessie64-gb-{{ user `version` }}.box",
+      "output": "box/{{.Provider}}/jessie64-gb-salt-{{user `salt_version`}}-{{ user `version` }}.box",
       "type": "vagrant",
       "vagrantfile_template": "{{ user `vagrantfile_template` }}"
     }
@@ -129,6 +129,7 @@
   "provisioners": [
     {
       "environment_vars": [
+        "SALT_VERSION={{user `salt_version`}}",
         "DESKTOP={{user `desktop`}}",
         "UPDATE={{user `update`}}",
         "INSTALL_VAGRANT_KEY={{user `install_vagrant_key`}}",
@@ -159,6 +160,7 @@
     }
   ],
   "variables": {
+    "salt_version": "latest",
     "cpus": "1",
     "desktop": "false",
     "disk_size": "65536",
