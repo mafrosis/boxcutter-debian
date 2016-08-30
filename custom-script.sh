@@ -27,3 +27,11 @@ function motd_saltstack {
 	sed -i "/Debian GNU/a\ \ Saltstack $(sudo salt-call --version | cut -d\  -f 2,3)" /etc/motd
 }
 motd_saltstack
+
+
+# display VMWare tools version message
+function motd_vmware_tools {
+	echo "==> Customizing message of the day for Saltstack"
+	sed -i "/Saltstack/a\ \ VMWare Tools $(cat /tmp/vmware_tools_version), $(vmware-toolbox-cmd -v)" /etc/motd
+}
+motd_vmware_tools
