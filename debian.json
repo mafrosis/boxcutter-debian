@@ -186,6 +186,7 @@
     "version": "0.1.0",
     "virtualbox_guest_os_type": "Debian_64",
     "vm_name": "debian82",
-    "vmware_guest_os_type": "debian8-64"
+    "vmware_guest_os_type": "debian8-64",
+    "vmware_tools_version": "8.5.3"
   }
 }
