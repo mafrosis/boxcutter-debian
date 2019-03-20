@@ -8,7 +8,7 @@ echo "==> Disk usage before minimization"
 df -h
 
 echo "==> Installed packages before cleanup"
-dpkg --get-selections | grep -v deinstall
+dpkg --get-selections | grep -v deinstall > /tmp/packages-before
 
 # Remove some packages to get a minimal install
 echo "==> Removing all linux kernels except the currrent one"

@@ -4,7 +4,7 @@
 # http://6.ptmc.org/?p=164
 echo "cleaning up udev rules"
 rm -rf /dev/.udev/
-rm /lib/udev/rules.d/75-persistent-net-generator.rules
+rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
 
 echo "==> Cleaning up leftover dhcp leases"
 if [ -d "/var/lib/dhcp" ]; then
@@ -19,10 +19,11 @@ apt-get -y autoremove --purge
 apt-get -y clean
 apt-get -y autoclean
 
-echo "==> Installed packages"
-dpkg --get-selections | grep -v deinstall
+echo "==> Packages removed during minimize"
+dpkg --get-selections | grep -v deinstall > /tmp/packages-after
+diff /tmp/packages-before /tmp/packages-after
 
-DISK_USAGE_BEFORE_CLEANUP=$(df -h)
+DISK_USAGE_BEFORE_CLEANUP="$(df -h)"
 
 # Remove Bash history
 unset HISTFILE
@@ -69,11 +70,11 @@ if [ "x${swapuuid}" != "x" ]; then
 fi
 
 # Make sure we wait until all the data is written to disk, otherwise
-# Packer might quite too early
+# Packer might quit too early
 sync
 
 echo "==> Disk usage before cleanup"
-echo ${DISK_USAGE_BEFORE_CLEANUP}
+echo "${DISK_USAGE_BEFORE_CLEANUP}"
 
 echo "==> Disk usage after cleanup"
 df -h
