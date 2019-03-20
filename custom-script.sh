@@ -16,10 +16,10 @@ bootstrap_salt() {
     echo '==> Installing Salt'
     if [[ ${SALT_VERSION:-} == 'latest' ]]; then
         echo 'Installing latest Salt version'
-        curl -L http://bootstrap.saltstack.org | bash | grep -v copying | grep -v byte-compiling
+        curl -L http://bootstrap.saltstack.org | bash -s -- -X -d | grep -v copying | grep -v byte-compiling
     else
         echo "Installing Salt version $SALT_VERSION"
-        curl -L http://bootstrap.saltstack.org | bash -s -- -P git "$SALT_VERSION" | grep -v copying | grep -v byte-compiling
+        curl -L http://bootstrap.saltstack.org | bash -s -- -X -d -P git "$SALT_VERSION" | grep -v copying | grep -v byte-compiling
     fi
 }
 bootstrap_salt
