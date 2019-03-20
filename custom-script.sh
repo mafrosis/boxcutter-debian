@@ -27,13 +27,22 @@ bootstrap_salt
 
 # install gitfs
 function saltstack_gitfs {
-	# Jessie currently has libgit2 v0.21.1
-	# https://packages.debian.org/jessie/libgit2-21
-	# We must install the correct version from pip
-
 	echo '==> Installing git, pip and pygit2'
-	apt-get install -y git python-pip libgit2-21 build-essential python-dev libffi-dev libgit2-dev
-	pip install -U pip pygit2==0.21.4
+	apt-get install -y git python-pip build-essential cmake python-dev libffi-dev libssl-dev
+
+	# install libgit2 from source
+	git clone --branch v0.26.0 git://github.com/libgit2/libgit2.git /tmp/libgit2
+	cd /tmp/libgit2 || exit 1
+	mkdir build && cd build || exit 1
+	cmake ..
+	cmake --build .
+	cmake --build . --target install
+
+	# update shared lib cache
+	ldconfig
+
+	# install pygit2
+	pip install -U cffi==1.11.2 pygit2==0.26.0
 }
 saltstack_gitfs
 
