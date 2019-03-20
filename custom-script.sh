@@ -35,7 +35,7 @@ motd_saltstack
 
 # display VMWare tools version message
 function motd_vmware_tools {
-	echo "==> Customizing message of the day for Saltstack"
-	sed -i "/Saltstack/a\ \ VMWare Tools $(cat /tmp/vmware_tools_version), $(vmware-toolbox-cmd -v)" /etc/motd
+	echo "==> Customizing message of the day for VMWare Tools"
+	sed -i "/Saltstack/a\ \ open-vm-tools $(vmware-toolbox-cmd -v)" /etc/motd
 }
 motd_vmware_tools

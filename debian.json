@@ -148,7 +148,7 @@
         "script/update.sh",
         "script/desktop.sh",
         "script/vagrant.sh",
-        "script/vmware.sh",
+        "script/open-vm-tools.sh",
         "script/virtualbox.sh",
         "script/parallels.sh",
         "script/motd.sh",
