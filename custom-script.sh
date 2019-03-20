@@ -8,6 +8,8 @@ set -eux
 # For example:
 # yum install -y curl wget git tmux firefox xvfb
 
+apt-get install -y curl
+
 
 # bootstrap salt
 bootstrap_salt() {
