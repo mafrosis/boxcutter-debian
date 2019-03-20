@@ -4,17 +4,6 @@ PACKER?=packer
 VERSION?=1
 HEADLESS?=true
 
-version:
-	@printf "Packer %s\n" $$($(PACKER) --version)
-
-ebs: version
-	$(PACKER) build -force \
-		-var-file=debian8.json \
-		-var update=true \
-		-var salt_version=v2016.3.5 \
-		-var version=$(VERSION) \
-		debian-ebs.json
-
 vagrant: version
 	$(PACKER) build -force -only=vmware-iso \
 		-var-file=debian8.json \
@@ -26,3 +15,6 @@ vagrant: version
 		-var salt_version=v2016.3.8 \
 		-var version=$(VERSION) \
 		debian.json
+
+version:
+	@printf "Packer %s\n" $$($(PACKER) --version)
